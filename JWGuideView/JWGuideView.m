@@ -9,8 +9,6 @@
 #import "JWGuideView.h"
 #import <QuartzCore/QuartzCore.h>
 
-#import <Masonry/Masonry.h>
-
 @implementation JWGuideInfo
 
 - (instancetype)init {
@@ -63,16 +61,14 @@
 
 #pragma mark - UI
 - (void)setupUI {
-    [self addSubview:self.guideInfoImageView];
     [self setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.7]];
+    if (self.guideInfoImageView) {
+        [self addSubview:self.guideInfoImageView];
+    }
 }
 
 - (void)resetUI {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
-    
-    [self.guideInfoImageView removeFromSuperview];
-    self.guideInfoImageView = [[UIImageView alloc] initWithImage:info.guideIntroImage];
-    [self addSubview:self.guideInfoImageView];
     
     [self setupMaskLayer:info];
     [self setupImageView:info.guideImageLocationType];
@@ -81,55 +77,65 @@
 //说明图片locaiton
 - (void)setupImageView:(GuideInfoImageLocationType)locationType {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
-
+    UIImage *image = info.guideIntroImage;
+    CGRect visualFrame = [self fetchfVisualViewFrame:info.focusView.frame edgeInsets:info.insetEdge];
+    CGRect imageViewFrame = self.guideInfoImageView.frame;
+    imageViewFrame.size = image.size;
+    self.guideInfoImageView.frame = imageViewFrame;
+    [self.guideInfoImageView setImage:image];
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGFloat imageWidth = CGRectGetWidth(imageViewFrame);
+    CGFloat imageHeight = CGRectGetHeight(imageViewFrame);
+    
     switch (locationType) {
         case kGuideInfoImageLocationLeftTop:{
-            [self.guideInfoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(info.focusView.mas_bottom).mas_offset(15 - info.insetEdge.bottom);
-                make.left.equalTo(self).mas_offset(20);
-            }];
+
+            imageViewFrame.origin.x = 20;
+            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
+            self.guideInfoImageView.frame = imageViewFrame;
+            
         }
             break;
         case kGuideInfoImageLocationRightTop: {
             
-            [self.guideInfoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(info.focusView.mas_bottom).mas_offset(15 - info.insetEdge.bottom);
-                make.right.equalTo(self).mas_offset(-20);
-            }];
+            imageViewFrame.origin.x = width - imageWidth - 20;
+            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
+            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationCenterTop: {
-            [self.guideInfoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(info.focusView.mas_top).mas_offset(15 - info.insetEdge.top);
-                make.centerX.equalTo(self.mas_centerX);
-            }];
+
+            imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
+            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
+            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationLeftBottom: {
-            [self.guideInfoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(info.focusView.mas_top).mas_offset(-15 + info.insetEdge.top);
-                make.left.equalTo(self).mas_offset(20);
-            }];
+
+            imageViewFrame.origin.x = 20;
+            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
+            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationRightBottom: {
-            [self.guideInfoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(info.focusView.mas_top).mas_offset(-15 + info.insetEdge.top);
-                make.right.equalTo(self).mas_offset(-20);
-            }];
+
+            imageViewFrame.origin.x = width - imageWidth - 20;
+            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
+            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationCenterBottom: {
-            [self.guideInfoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(info.focusView.mas_top).mas_offset(-15 + info.insetEdge.top);
-                make.centerX.equalTo(self.mas_centerX);
-            }];
+            
+            imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
+            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
+            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
             
         default:
             break;
     }
+    [self setNeedsDisplay];
 }
 
 //可视的frame
