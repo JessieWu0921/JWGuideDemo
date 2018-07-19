@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UIView *view3;
 @property (weak, nonatomic) IBOutlet UIView *view4;
 @property (weak, nonatomic) IBOutlet UIView *view5;
+@property (weak, nonatomic) IBOutlet UIView *view6;
+@property (weak, nonatomic) IBOutlet UIView *view7;
 
 @end
 
@@ -54,12 +56,22 @@
     m5.focusView = self.view5;
     m5.guideImageLocationType = kGuideInfoImageLocationRightBottom;
     m5.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    JWGuideInfo *m6 = [JWGuideInfo new];
+    m6.focusView = self.view6;
+    m6.guideImageLocationType = kGuideInfoImageLocationCenterBottom;
+    m6.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    JWGuideInfo *m7 = [JWGuideInfo new];
+    m7.focusView = self.view7;
+    m7.guideImageLocationType = kGuideInfoImageLocationCenterTop;
+    m7.guideIntroImage = [UIImage imageNamed:@"study_guide"];
     NSMutableArray *datas = [NSMutableArray new];
     [datas addObject:m1];
     [datas addObject:m2];
     [datas addObject:m3];
     [datas addObject:m4];
     [datas addObject:m5];
+    [datas addObject:m6];
+    [datas addObject:m7];
     
     JWGuideView *guideView = [[JWGuideView alloc] init];
     [guideView showGuideView:datas];

@@ -65,15 +65,35 @@
                                     <action selector="clickedBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="whs-gK-Qq8"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rtl-tT-ASe">
+                                <rect key="frame" x="88" y="453" width="199" height="53"/>
+                                <color key="backgroundColor" red="0.74627903510000004" green="0.9917191769" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="53" id="3xu-1K-xXG"/>
+                                    <constraint firstAttribute="width" constant="199" id="6u9-ze-ppK"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m6f-nx-b2q">
+                                <rect key="frame" x="156" y="222" width="63" height="34"/>
+                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="63" id="8a9-Qs-1xB"/>
+                                    <constraint firstAttribute="height" constant="34" id="Dz4-Af-9hW"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="m6f-nx-b2q" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1BQ-gi-OGp"/>
                             <constraint firstItem="R6y-Yg-yZo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="119" id="1HA-we-m24"/>
                             <constraint firstItem="oXy-u1-EEp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="57" id="5u5-bR-iky"/>
                             <constraint firstItem="djO-J2-uMh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="78" id="7vt-mg-aqS"/>
+                            <constraint firstItem="Rtl-tT-ASe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KBd-CA-R1e"/>
+                            <constraint firstItem="Rtl-tT-ASe" firstAttribute="top" secondItem="oXy-u1-EEp" secondAttribute="bottom" constant="100" id="NVs-pF-HIo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="dOg-dC-LB8" secondAttribute="bottom" constant="63" id="SN9-Oy-Vat"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="R6y-Yg-yZo" secondAttribute="trailing" constant="30" id="WKP-iy-SAT"/>
                             <constraint firstItem="djO-J2-uMh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="39" id="XqC-FA-v49"/>
+                            <constraint firstItem="m6f-nx-b2q" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="202" id="adC-37-L2D"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dOg-dC-LB8" secondAttribute="trailing" constant="30" id="fyb-u5-eLO"/>
                             <constraint firstItem="RKb-VD-6xY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="39" id="oXp-oZ-Eut"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="RKb-VD-6xY" secondAttribute="bottom" constant="37" id="vlt-NE-XT7"/>
@@ -87,6 +107,8 @@
                         <outlet property="view3" destination="R6y-Yg-yZo" id="Rhh-Aq-CEr"/>
                         <outlet property="view4" destination="RKb-VD-6xY" id="BeT-2Y-MFl"/>
                         <outlet property="view5" destination="dOg-dC-LB8" id="jZo-xi-3ff"/>
+                        <outlet property="view6" destination="Rtl-tT-ASe" id="z4h-ao-EgN"/>
+                        <outlet property="view7" destination="m6f-nx-b2q" id="ilr-sX-ENZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
