@@ -85,7 +85,9 @@
 - (void)setupImageView:(GuideInfoImageLocationType)locationType {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     UIImage *image = info.guideIntroImage;
-    CGRect baseFrame = [self getMasWindowFrame:info.focusView];
+    CGRect baseFrame = info.focusView.frame;
+    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
+    
     CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
     CGRect imageViewFrame = self.guideInfoImageView.frame;
     imageViewFrame.size = image.size;
@@ -143,16 +145,14 @@
     [self setNeedsDisplay];
 }
 
-- (CGRect)getMasWindowFrame:(UIView *)view {
-    UIView *superView = view.superview;
-    CGRect frame = view.frame;
-    if (superView && ![superView.superview isKindOfClass:[UIWindow class]]) {
-        frame.origin.y += CGRectGetMinY(superView.frame);
-        frame.origin.x += CGRectGetMinX(superView.frame);
-        [self getMasWindowFrame:superView];
-    }
+- (void)getBaseFrameToWindow:(UIView *)view frame:(CGRect *)frame{
     
-    return frame;
+    UIView *superView = view.superview;
+    if (superView && ![superView.superview isKindOfClass:[UIWindow class]]) {
+        frame->origin.x += CGRectGetMinX(superView.frame);
+        frame->origin.y += CGRectGetMinY(superView.frame) + ([superView isKindOfClass:[UINavigationBar class]] ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0);
+        [self getBaseFrameToWindow:superView frame:frame];
+    }
 }
 
 //可视的frame
@@ -171,7 +171,8 @@
     self.maskLayer.fillColor = [UIColor blackColor].CGColor;
     
     //可视路径
-    CGRect baseFrame = [self getMasWindowFrame:guideInfo.focusView];
+    CGRect baseFrame = guideInfo.focusView.frame;
+    [self getBaseFrameToWindow:guideInfo.focusView frame:&baseFrame];
     
     CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
     UIBezierPath *visualPath = [UIBezierPath bezierPathWithRoundedRect:visualFrame cornerRadius:guideInfo.cornRadius];
