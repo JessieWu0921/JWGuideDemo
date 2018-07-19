@@ -9,6 +9,9 @@
 #import "JWGuideView.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define HorizontalOffset     20
+#define VerticalOffset       15
+
 @implementation JWGuideInfo
 
 - (instancetype)init {
@@ -41,6 +44,10 @@
         [self setupUI];
     }
     return self;
+}
+
+- (void)dealloc {
+    
 }
 
 #pragma mark - setter & getter
@@ -90,38 +97,38 @@
     switch (locationType) {
         case kGuideInfoImageLocationLeftTop:{
 
-            imageViewFrame.origin.x = 20;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
+            imageViewFrame.origin.x = HorizontalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationRightTop: {
             
-            imageViewFrame.origin.x = width - imageWidth - 20;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
+            imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationCenterTop: {
 
             imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
+            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationLeftBottom: {
 
-            imageViewFrame.origin.x = 20;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
+            imageViewFrame.origin.x = HorizontalOffset;
+            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
         }
             break;
         case kGuideInfoImageLocationRightBottom: {
 
-            imageViewFrame.origin.x = width - imageWidth - 20;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
+            imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
+            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
         }
             break;
         case kGuideInfoImageLocationCenterBottom: {
             
             imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
+            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
         }
             break;
             
@@ -129,7 +136,7 @@
             break;
     }
     //动画
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         self.guideInfoImageView.frame = imageViewFrame;
     }];
     [self setNeedsDisplay];
