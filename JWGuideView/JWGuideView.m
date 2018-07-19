@@ -92,49 +92,46 @@
 
             imageViewFrame.origin.x = 20;
             imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
-            self.guideInfoImageView.frame = imageViewFrame;
-            
         }
             break;
         case kGuideInfoImageLocationRightTop: {
             
             imageViewFrame.origin.x = width - imageWidth - 20;
             imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
-            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationCenterTop: {
 
             imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
             imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + 15;
-            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationLeftBottom: {
 
             imageViewFrame.origin.x = 20;
             imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
-            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationRightBottom: {
 
             imageViewFrame.origin.x = width - imageWidth - 20;
             imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
-            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
         case kGuideInfoImageLocationCenterBottom: {
             
             imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
             imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - 15 - imageHeight;
-            self.guideInfoImageView.frame = imageViewFrame;
         }
             break;
             
         default:
             break;
     }
+    //动画
+    [UIView animateWithDuration:0.2 animations:^{
+        self.guideInfoImageView.frame = imageViewFrame;
+    }];
     [self setNeedsDisplay];
 }
 
@@ -149,6 +146,7 @@
 }
 
 - (void)setupMaskLayer:(JWGuideInfo *)guideInfo {
+    CGPathRef fromePath = self.maskLayer.path;
     self.maskLayer.frame = self.bounds;
     self.maskLayer.fillColor = [UIColor blackColor].CGColor;
     
@@ -162,11 +160,15 @@
     self.maskLayer.path = toPath.CGPath;
     self.maskLayer.fillRule = kCAFillRuleEvenOdd;
     self.layer.mask = self.maskLayer;
+    //动画
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"path"];
+    animation.duration = 0.2;
+    animation.fromValue = (__bridge id)fromePath;
+    animation.toValue = (__bridge id)toPath.CGPath;
+    [self.maskLayer addAnimation:animation forKey:nil];
 }
 
-
 #pragma mark - public method
-
 - (void)showGuideView:(NSArray<JWGuideInfo*> *)guidInfos{
     [UIApplication sharedApplication].statusBarHidden = YES;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
@@ -190,6 +192,5 @@
         [self resetUI];
     }
 }
-
 
 @end
