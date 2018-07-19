@@ -85,7 +85,8 @@
 - (void)setupImageView:(GuideInfoImageLocationType)locationType {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     UIImage *image = info.guideIntroImage;
-    CGRect visualFrame = [self fetchfVisualViewFrame:info.focusView.frame edgeInsets:info.insetEdge];
+    CGRect baseFrame = [self getMasWindowFrame:info.focusView];
+    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
     CGRect imageViewFrame = self.guideInfoImageView.frame;
     imageViewFrame.size = image.size;
     self.guideInfoImageView.frame = imageViewFrame;
@@ -142,6 +143,18 @@
     [self setNeedsDisplay];
 }
 
+- (CGRect)getMasWindowFrame:(UIView *)view {
+    UIView *superView = view.superview;
+    CGRect frame = view.frame;
+    if (superView && ![superView.superview isKindOfClass:[UIWindow class]]) {
+        frame.origin.y += CGRectGetMinY(superView.frame);
+        frame.origin.x += CGRectGetMinX(superView.frame);
+        [self getMasWindowFrame:superView];
+    }
+    
+    return frame;
+}
+
 //可视的frame
 - (CGRect)fetchfVisualViewFrame:(CGRect)baseFrame edgeInsets:(UIEdgeInsets)inset {
     CGRect visualFrame = CGRectZero;
@@ -158,7 +171,9 @@
     self.maskLayer.fillColor = [UIColor blackColor].CGColor;
     
     //可视路径
-    CGRect visualFrame = [self fetchfVisualViewFrame:guideInfo.focusView.frame edgeInsets:guideInfo.insetEdge];
+    CGRect baseFrame = [self getMasWindowFrame:guideInfo.focusView];
+    
+    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
     UIBezierPath *visualPath = [UIBezierPath bezierPathWithRoundedRect:visualFrame cornerRadius:guideInfo.cornRadius];
     UIBezierPath *toPath = [UIBezierPath bezierPathWithRect:self.frame];
     [toPath appendPath:visualPath];

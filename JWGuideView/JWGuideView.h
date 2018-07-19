@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, GuideInfoImageLocationType){
 @interface JWGuideInfo: NSObject
 
 @property (nonatomic, assign) UIEdgeInsets insetEdge;
+@property (nonatomic, assign) CGRect baseFrame;
 @property (nonatomic, assign) CGFloat cornRadius;
 @property (nonatomic, strong) UIImage *guideIntroImage;
 @property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
