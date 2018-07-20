@@ -45,6 +45,6 @@ typedef NS_ENUM(NSInteger, GuideInfoImageLocationType){
 
 @interface JWGuideView : UIView
 
-- (void)showGuideView:(NSArray<JWGuideInfo*> *)guidInfos;
+- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos;
 
 @end

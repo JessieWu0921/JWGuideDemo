@@ -192,7 +192,7 @@
 }
 
 #pragma mark - public method
-- (void)showGuideView:(NSArray<JWGuideInfo*> *)guidInfos{
+- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos{
     [UIApplication sharedApplication].statusBarHidden = YES;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     self.frame = window.bounds;
