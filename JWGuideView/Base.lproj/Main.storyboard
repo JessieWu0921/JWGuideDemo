@@ -23,10 +23,22 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WI6-Xv-y5E">
                                         <rect key="frame" x="25" y="22" width="43" height="82"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fwd-nL-F9v">
+                                                <rect key="frame" x="11" y="32" width="21" height="18"/>
+                                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="18" id="B0Z-XJ-PlW"/>
+                                                    <constraint firstAttribute="width" constant="21" id="LnP-VT-kFm"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
                                         <color key="backgroundColor" red="0.98431372549999996" green="0.31764705879999999" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
+                                            <constraint firstItem="fwd-nL-F9v" firstAttribute="centerY" secondItem="WI6-Xv-y5E" secondAttribute="centerY" id="ASi-2n-oVT"/>
                                             <constraint firstAttribute="width" constant="43" id="HXU-Sm-M9f"/>
                                             <constraint firstAttribute="height" constant="82" id="MFX-4M-WCj"/>
+                                            <constraint firstItem="fwd-nL-F9v" firstAttribute="centerX" secondItem="WI6-Xv-y5E" secondAttribute="centerX" id="RH9-GC-5kF"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -123,6 +135,7 @@
                         <outlet property="view6" destination="Rtl-tT-ASe" id="z4h-ao-EgN"/>
                         <outlet property="view7" destination="m6f-nx-b2q" id="ilr-sX-ENZ"/>
                         <outlet property="view8" destination="WI6-Xv-y5E" id="h57-Pd-x9C"/>
+                        <outlet property="view9" destination="fwd-nL-F9v" id="JaR-zq-0vx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
