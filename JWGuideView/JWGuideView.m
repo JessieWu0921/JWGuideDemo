@@ -148,7 +148,7 @@
 - (void)getBaseFrameToWindow:(UIView *)view frame:(CGRect *)frame{
     
     UIView *superView = view.superview;
-    if (superView && ![superView.superview isKindOfClass:[UIWindow class]]) {
+    if (superView && !CGPointEqualToPoint(superView.frame.origin, CGPointZero)) {
         frame->origin.x += CGRectGetMinX(superView.frame);
         frame->origin.y += CGRectGetMinY(superView.frame) + ([superView isKindOfClass:[UINavigationBar class]] ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0);
         [self getBaseFrameToWindow:superView frame:frame];
