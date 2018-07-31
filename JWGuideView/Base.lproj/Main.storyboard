@@ -125,8 +125,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Home" id="kZ5-iT-1no"/>
+                    <navigationItem key="navigationItem" title="Home" id="kZ5-iT-1no">
+                        <barButtonItem key="rightBarButtonItem" title="rightBtn" id="pC7-JS-9z7"/>
+                    </navigationItem>
                     <connections>
+                        <outlet property="rightBarItem" destination="pC7-JS-9z7" id="hP6-mU-HzP"/>
                         <outlet property="view1" destination="djO-J2-uMh" id="yCh-Ph-aOc"/>
                         <outlet property="view2" destination="oXy-u1-EEp" id="4c6-4D-Eig"/>
                         <outlet property="view3" destination="R6y-Yg-yZo" id="Rhh-Aq-CEr"/>

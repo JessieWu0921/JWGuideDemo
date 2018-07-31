@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIView *view7;
 @property (weak, nonatomic) IBOutlet UIView *view8;
 @property (weak, nonatomic) IBOutlet UIView *view9;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarItem;
 
 @end
 
@@ -76,7 +77,15 @@
     m9.insetEdge = UIEdgeInsetsMake(-4, -4, -4, -4);
     m9.guideImageLocationType = kGuideInfoImageLocationLeftTop;
     m9.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    
+    JWGuideInfo *m10 = [JWGuideInfo new];
+    m10.focusView = [self.rightBarItem valueForKey:@"_view"];
+    m10.cornRadius = 5.0f;
+    m10.insetEdge = UIEdgeInsetsMake(-4, -4, -4, -4);
+    m10.guideImageLocationType = kGuideInfoImageLocationRightTop;
+    m10.guideIntroImage = [UIImage imageNamed:@"study_guide"];
     NSMutableArray *datas = [NSMutableArray new];
+    [datas addObject:m10];
     [datas addObject:m1];
     [datas addObject:m2];
     [datas addObject:m3];
@@ -86,6 +95,7 @@
     [datas addObject:m7];
     [datas addObject:m8];
     [datas addObject:m9];
+    
     
     JWGuideView *guideView = [[JWGuideView alloc] init];
     [guideView showGuideView:datas];

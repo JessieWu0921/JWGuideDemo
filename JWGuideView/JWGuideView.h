@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, GuideInfoImageLocationType){
 @property (nonatomic, strong) UIImage *guideIntroImage;
 @property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
 @property (nonatomic, strong) UIView *focusView;
+//用于自定义navigationbar
+@property (nonatomic, assign, getter=isNavigtionBar) BOOL navBar;
 
 @end
 

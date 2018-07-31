@@ -148,9 +148,9 @@
 - (void)getBaseFrameToWindow:(UIView *)view frame:(CGRect *)frame{
     
     UIView *superView = view.superview;
-    if (superView && !CGPointEqualToPoint(superView.frame.origin, CGPointZero)) {
+    if (superView && ![superView.superview isKindOfClass:[UIWindow class]]) { //
         frame->origin.x += CGRectGetMinX(superView.frame);
-        frame->origin.y += CGRectGetMinY(superView.frame) + ([superView isKindOfClass:[UINavigationBar class]] ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0);
+        frame->origin.y += CGRectGetMinY(superView.frame);
         [self getBaseFrameToWindow:superView frame:frame];
     }
 }
@@ -172,6 +172,7 @@
     
     //可视路径
     CGRect baseFrame = guideInfo.focusView.frame;
+    baseFrame.origin.y += guideInfo.isNavigtionBar ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0.0;
     [self getBaseFrameToWindow:guideInfo.focusView frame:&baseFrame];
     
     CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
