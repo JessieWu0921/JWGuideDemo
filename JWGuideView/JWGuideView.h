@@ -35,12 +35,13 @@ typedef NS_ENUM(NSInteger, GuideInfoImageLocationType){
 @interface JWGuideInfo: NSObject
 
 @property (nonatomic, assign) UIEdgeInsets insetEdge;
+//保留字段 暂时未做处理
 @property (nonatomic, assign) CGRect baseFrame;
 @property (nonatomic, assign) CGFloat cornRadius;
 @property (nonatomic, strong) UIImage *guideIntroImage;
 @property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
 @property (nonatomic, strong) UIView *focusView;
-//用于自定义navigationbar
+//用于自定义navigationbar 上的焦点view
 @property (nonatomic, assign, getter=isNavigtionBar) BOOL navBar;
 
 @end
