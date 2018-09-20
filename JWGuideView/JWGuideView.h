@@ -39,6 +39,7 @@ typedef void(^ActionHandle)(NSInteger guideIndex);
 @property (nonatomic, assign) UIEdgeInsets insetEdge;
 @property (nonatomic, assign) CGRect baseFrame;
 @property (nonatomic, assign) CGFloat cornRadius;
+@property (nonatomic, assign) CGFloat buttonOffset;
 @property (nonatomic, strong) UIImage *guideIntroImage;
 @property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
 @property (nonatomic, strong) UIView *focusView;

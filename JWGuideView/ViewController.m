@@ -47,11 +47,13 @@
     m2.guideImageLocationType = kGuideInfoImageLocationCenterTop;
     m2.guideIntroImage = [UIImage imageNamed:@"mine_guide_content"];
     m2.buttonImage = [UIImage imageNamed:@"mine_guide_btn_know"];
+    m2.buttonOffset = 38.0f;
     JWGuideInfo *m3 = [JWGuideInfo new];
     m3.focusView = self.view3;
     m3.guideImageLocationType = kGuideInfoImageLocationRightTop;
     m3.guideIntroImage = [UIImage imageNamed:@"study_guide"];
     m3.buttonImage = [UIImage imageNamed:@"mine_guide_btn_know"];
+    m3.buttonOffset = 20.0f;
     JWGuideInfo *m4 = [JWGuideInfo new];
     m4.focusView = self.view4;
     m4.guideImageLocationType = kGuideInfoImageLocationLeftBottom;

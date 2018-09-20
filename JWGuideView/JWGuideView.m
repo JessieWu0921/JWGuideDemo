@@ -21,6 +21,7 @@
     if (self) {
         self.insetEdge = UIEdgeInsetsMake(-8, -8, -8, -8);  //默认
         self.cornRadius = 20.0f;
+        self.buttonOffset = 30.0f;
     }
     return self;
 }
@@ -95,7 +96,7 @@
     
     [self setupMaskLayer:info];
     [self setupImageView:info.guideImageLocationType];
-    [self setupActionBtn];
+//    [self setupActionBtn];
 }
 
 //说明图片locaiton
@@ -155,25 +156,32 @@
         default:
             break;
     }
+    
+    CGRect buttonFrame = [self setupActionBtn:imageViewFrame];
     //动画
     [UIView animateWithDuration:0.3 animations:^{
         self.guideInfoImageView.frame = imageViewFrame;
+        self.actionBtn.frame = buttonFrame;
     }];
     [self setNeedsDisplay];
 }
 
-- (void)setupActionBtn {
+- (CGRect)setupActionBtn:(CGRect)imageFrame {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     self.actionBtn.hidden = !info.buttonImage;
     if (info.buttonImage) {
         [self.actionBtn setImage:info.buttonImage forState:UIControlStateNormal];
-        [self.actionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.guideInfoImageView.mas_bottom).mas_equalTo(38);
-            make.centerX.equalTo(self.guideInfoImageView.mas_centerX);
-        }];
+        
         [self.actionBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+        
+        CGRect buttonFrame = self.actionBtn.frame;
+        buttonFrame.size = info.buttonImage.size;
+        buttonFrame.origin.x = CGRectGetMinX(imageFrame) + CGRectGetWidth(imageFrame) / 2 - info.buttonImage.size.width / 2;
+        buttonFrame.origin.y = CGRectGetMaxY(imageFrame) + info.buttonOffset;
+        
+        return buttonFrame;
     }
-    [self setNeedsDisplay];
+    return CGRectZero;
 }
 
 - (void)getBaseFrameToWindow:(UIView *)view frame:(CGRect *)frame{
