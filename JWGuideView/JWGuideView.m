@@ -8,9 +8,11 @@
 
 #import "JWGuideView.h"
 #import <QuartzCore/QuartzCore.h>
+#import <Masonry/Masonry.h>
 
 #define HorizontalOffset     20
 #define VerticalOffset       15
+#define ScreenWidth          CGRectGetWidth([UIScreen mainScreen].bounds)
 
 @implementation JWGuideInfo
 
@@ -28,10 +30,13 @@
 @interface JWGuideView()
 
 @property (nonatomic, strong) UIImageView *guideInfoImageView;
+@property (nonatomic, strong) UIButton *actionBtn;
 @property (nonatomic, strong) CAShapeLayer *maskLayer;
 
 @property (nonatomic, copy) NSArray<JWGuideInfo *> *guideInfos;
 @property (nonatomic, assign) NSUInteger currentIndex;
+
+@property (nonatomic, copy) ActionHandle handle;
 
 
 @end
@@ -66,11 +71,22 @@
     return _guideInfoImageView;
 }
 
+- (UIButton *)actionBtn {
+    if (!_actionBtn) {
+        _actionBtn = [[UIButton alloc] init];
+    }
+    return _actionBtn;
+}
+
 #pragma mark - UI
 - (void)setupUI {
     [self setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.7]];
     if (self.guideInfoImageView) {
         [self addSubview:self.guideInfoImageView];
+    }
+    if (self.actionBtn) {
+        [self addSubview:self.actionBtn];
+        self.actionBtn.hidden = YES;
     }
 }
 
@@ -79,6 +95,7 @@
     
     [self setupMaskLayer:info];
     [self setupImageView:info.guideImageLocationType];
+    [self setupActionBtn];
 }
 
 //说明图片locaiton
@@ -112,7 +129,7 @@
             break;
         case kGuideInfoImageLocationCenterTop: {
 
-            imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
+            imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
             imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
         }
             break;
@@ -130,7 +147,7 @@
             break;
         case kGuideInfoImageLocationCenterBottom: {
             
-            imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
+            imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
             imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
         }
             break;
@@ -142,6 +159,20 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.guideInfoImageView.frame = imageViewFrame;
     }];
+    [self setNeedsDisplay];
+}
+
+- (void)setupActionBtn {
+    JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
+    self.actionBtn.hidden = !info.buttonImage;
+    if (info.buttonImage) {
+        [self.actionBtn setImage:info.buttonImage forState:UIControlStateNormal];
+        [self.actionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.guideInfoImageView.mas_bottom).mas_equalTo(38);
+            make.centerX.equalTo(self.guideInfoImageView.mas_centerX);
+        }];
+        [self.actionBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    }
     [self setNeedsDisplay];
 }
 
@@ -192,7 +223,7 @@
 }
 
 #pragma mark - public method
-- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos{
+- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos actionHandle:(nullable ActionHandle)handle{
     [UIApplication sharedApplication].statusBarHidden = YES;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     self.frame = window.bounds;
@@ -201,6 +232,10 @@
     self.guideInfos = guidInfos;
     self.currentIndex = 0;
     [self resetUI];
+    
+    if (handle) {
+        self.handle = handle;
+    }
 }
 
 #pragma mark - private methods
@@ -213,6 +248,12 @@
     } else {
         self.currentIndex++;
         [self resetUI];
+    }
+}
+
+- (void)action:(id)sender {
+    if (self.handle) {
+        self.handle(self.currentIndex);
     }
 }
 

@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		65825B9D2112E50000C2A3C7 /* OCLint */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 65825BA02112E50100C2A3C7 /* Build configuration list for PBXAggregateTarget "OCLint" */;
+			buildPhases = (
+				65825BA12112E55A00C2A3C7 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = OCLint;
+			productName = OCLint;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		65D87C4B20FF0E4C00534A8E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D87C4A20FF0E4C00534A8E /* AppDelegate.m */; };
 		65D87C4E20FF0E4C00534A8E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D87C4D20FF0E4C00534A8E /* ViewController.m */; };
@@ -132,6 +146,9 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = JessieWu;
 				TargetAttributes = {
+					65825B9D2112E50000C2A3C7 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
 					65D87C4520FF0E4C00534A8E = {
 						CreatedOnToolsVersion = 9.4.1;
 					};
@@ -151,6 +168,7 @@
 			projectRoot = "";
 			targets = (
 				65D87C4520FF0E4C00534A8E /* JWGuideView */,
+				65825B9D2112E50000C2A3C7 /* OCLint */,
 			);
 		};
 /* End PBXProject section */
@@ -169,6 +187,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		65825BA12112E55A00C2A3C7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "source ~/.bash_profile\ncd ${SRCROOT}\nxcodebuild clean\nxcodebuild | tee xcodebuild.log\noclint-xcodebuild\noclint-json-compilation-database \\\n-e Vendor \\\n-e Pods \\\n-- \\\n-max-priority-1 100000 \\\n-max-priority-2 100000 \\\n-max-priority-3 100000 \\\n-report-type xcode \n";
+		};
 		6E232822A60C1A77C5998113 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -241,6 +272,24 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		65825B9E2112E50100C2A3C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DT8MY6DL3S;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		65825B9F2112E50100C2A3C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DT8MY6DL3S;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		65D87C5A20FF0E5100534A8E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -390,6 +439,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		65825BA02112E50100C2A3C7 /* Build configuration list for PBXAggregateTarget "OCLint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65825B9E2112E50100C2A3C7 /* Debug */,
+				65825B9F2112E50100C2A3C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		65D87C4120FF0E4C00534A8E /* Build configuration list for PBXProject "JWGuideView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

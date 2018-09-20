@@ -44,12 +44,14 @@
     m1.guideIntroImage = [UIImage imageNamed:@"study_guide"];
     JWGuideInfo *m2 = [JWGuideInfo new];
     m2.focusView = self.view2;
-    m2.guideImageLocationType = kGuideInfoImageLocationLeftTop;
-    m2.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    m2.guideImageLocationType = kGuideInfoImageLocationCenterTop;
+    m2.guideIntroImage = [UIImage imageNamed:@"mine_guide_content"];
+    m2.buttonImage = [UIImage imageNamed:@"mine_guide_btn_know"];
     JWGuideInfo *m3 = [JWGuideInfo new];
     m3.focusView = self.view3;
     m3.guideImageLocationType = kGuideInfoImageLocationRightTop;
     m3.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    m3.buttonImage = [UIImage imageNamed:@"mine_guide_btn_know"];
     JWGuideInfo *m4 = [JWGuideInfo new];
     m4.focusView = self.view4;
     m4.guideImageLocationType = kGuideInfoImageLocationLeftBottom;
@@ -88,7 +90,9 @@
     [datas addObject:m9];
     
     JWGuideView *guideView = [[JWGuideView alloc] init];
-    [guideView showGuideView:datas];
+    [guideView showGuideView:datas actionHandle:^(NSInteger guideIndex) {
+        NSLog(@"now clicked %zi guideView.", guideIndex);
+    }];
 }
 
 - (IBAction)clickedBtn:(id)sender {
