@@ -8,9 +8,11 @@
 
 #import "JWGuideView.h"
 #import <QuartzCore/QuartzCore.h>
+#import <Masonry/Masonry.h>
 
 #define HorizontalOffset     20
 #define VerticalOffset       15
+#define ScreenWidth          CGRectGetWidth([UIScreen mainScreen].bounds)
 
 @implementation JWGuideInfo
 
@@ -19,6 +21,9 @@
     if (self) {
         self.insetEdge = UIEdgeInsetsMake(-8, -8, -8, -8);  //默认
         self.cornRadius = 20.0f;
+        self.buttonOffset = 30.0f;
+        self.baseFrame = CGRectZero;
+        self.verticalOffset = VerticalOffset;
     }
     return self;
 }
@@ -28,10 +33,15 @@
 @interface JWGuideView()
 
 @property (nonatomic, strong) UIImageView *guideInfoImageView;
+@property (nonatomic, strong) UIButton *actionBtn;
 @property (nonatomic, strong) CAShapeLayer *maskLayer;
 
 @property (nonatomic, copy) NSArray<JWGuideInfo *> *guideInfos;
 @property (nonatomic, assign) NSUInteger currentIndex;
+
+@property (nonatomic, assign) CGRect visualFrame;
+
+@property (nonatomic, copy) ActionHandle handle;
 
 
 @end
@@ -66,29 +76,46 @@
     return _guideInfoImageView;
 }
 
+- (UIButton *)actionBtn {
+    if (!_actionBtn) {
+        _actionBtn = [[UIButton alloc] init];
+    }
+    return _actionBtn;
+}
+
 #pragma mark - UI
 - (void)setupUI {
     [self setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.7]];
     if (self.guideInfoImageView) {
         [self addSubview:self.guideInfoImageView];
     }
+    if (self.actionBtn) {
+        [self addSubview:self.actionBtn];
+        self.actionBtn.hidden = YES;
+    }
 }
 
 - (void)resetUI {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     
+    CGRect baseFrame = info.focusView ? info.focusView.frame : info.baseFrame;
+    baseFrame.origin.y += info.isNavigtionBar ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0.0;
+    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
+    self.visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
+    
     [self setupMaskLayer:info];
     [self setupImageView:info.guideImageLocationType];
+//    [self setupActionBtn];
 }
 
 //说明图片locaiton
 - (void)setupImageView:(GuideInfoImageLocationType)locationType {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     UIImage *image = info.guideIntroImage;
-    CGRect baseFrame = info.focusView.frame;
-    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
-    
-    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
+//    CGRect baseFrame = info.focusView.frame;
+//    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
+//
+//    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
     CGRect imageViewFrame = self.guideInfoImageView.frame;
     imageViewFrame.size = image.size;
     self.guideInfoImageView.frame = imageViewFrame;
@@ -101,48 +128,69 @@
         case kGuideInfoImageLocationLeftTop:{
 
             imageViewFrame.origin.x = HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationRightTop: {
             
             imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationCenterTop: {
 
-            imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
+            imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationLeftBottom: {
 
             imageViewFrame.origin.x = HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
         }
             break;
         case kGuideInfoImageLocationRightBottom: {
 
             imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
         }
             break;
         case kGuideInfoImageLocationCenterBottom: {
             
-            imageViewFrame.origin.x = CGRectGetMidX(visualFrame) - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
         }
             break;
             
         default:
             break;
     }
+    
+    CGRect buttonFrame = [self setupActionBtn:imageViewFrame];
     //动画
     [UIView animateWithDuration:0.3 animations:^{
         self.guideInfoImageView.frame = imageViewFrame;
+        self.actionBtn.frame = buttonFrame;
     }];
     [self setNeedsDisplay];
+}
+
+- (CGRect)setupActionBtn:(CGRect)imageFrame {
+    JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
+    self.actionBtn.hidden = !info.buttonImage;
+    if (info.buttonImage) {
+        [self.actionBtn setImage:info.buttonImage forState:UIControlStateNormal];
+        
+        [self.actionBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+        
+        CGRect buttonFrame = self.actionBtn.frame;
+        buttonFrame.size = info.buttonImage.size;
+        buttonFrame.origin.x = CGRectGetMinX(imageFrame) + CGRectGetWidth(imageFrame) / 2 - info.buttonImage.size.width / 2;
+        buttonFrame.origin.y = CGRectGetMaxY(imageFrame) + info.buttonOffset;
+        
+        return buttonFrame;
+    }
+    return CGRectZero;
 }
 
 - (void)getBaseFrameToWindow:(UIView *)view frame:(CGRect *)frame{
@@ -171,12 +219,11 @@
     self.maskLayer.fillColor = [UIColor blackColor].CGColor;
     
     //可视路径
-    CGRect baseFrame = guideInfo.focusView.frame;
-    baseFrame.origin.y += guideInfo.isNavigtionBar ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0.0;
-    [self getBaseFrameToWindow:guideInfo.focusView frame:&baseFrame];
-    
-    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
-    UIBezierPath *visualPath = [UIBezierPath bezierPathWithRoundedRect:visualFrame cornerRadius:guideInfo.cornRadius];
+//    CGRect baseFrame = guideInfo.focusView.frame;
+//    [self getBaseFrameToWindow:guideInfo.focusView frame:&baseFrame];
+//
+//    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
+    UIBezierPath *visualPath = [UIBezierPath bezierPathWithRoundedRect:_visualFrame cornerRadius:guideInfo.cornRadius];
     UIBezierPath *toPath = [UIBezierPath bezierPathWithRect:self.frame];
     [toPath appendPath:visualPath];
     
@@ -193,7 +240,7 @@
 }
 
 #pragma mark - public method
-- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos{
+- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos actionHandle:(nullable ActionHandle)handle{
     [UIApplication sharedApplication].statusBarHidden = YES;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     self.frame = window.bounds;
@@ -202,6 +249,10 @@
     self.guideInfos = guidInfos;
     self.currentIndex = 0;
     [self resetUI];
+    
+    if (handle) {
+        self.handle = handle;
+    }
 }
 
 #pragma mark - private methods
@@ -214,6 +265,12 @@
     } else {
         self.currentIndex++;
         [self resetUI];
+    }
+}
+
+- (void)action:(id)sender {
+    if (self.handle) {
+        self.handle(self.currentIndex);
     }
 }
 

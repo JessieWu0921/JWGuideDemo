@@ -32,22 +32,29 @@ typedef NS_ENUM(NSInteger, GuideInfoImageLocationType){
     kGuideInfoImageLocationCenterBottom
 };
 
+typedef void(^ActionHandle)(NSInteger guideIndex);
+
 @interface JWGuideInfo: NSObject
 
 @property (nonatomic, assign) UIEdgeInsets insetEdge;
 //保留字段 暂时未做处理
 @property (nonatomic, assign) CGRect baseFrame;
 @property (nonatomic, assign) CGFloat cornRadius;
+@property (nonatomic, assign) CGFloat buttonOffset;
+//图片与焦点view的offsetY
+@property (nonatomic, assign) CGFloat verticalOffset;
 @property (nonatomic, strong) UIImage *guideIntroImage;
 @property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
 @property (nonatomic, strong) UIView *focusView;
 //用于自定义navigationbar 上的焦点view
 @property (nonatomic, assign, getter=isNavigtionBar) BOOL navBar;
 
+@property (nonatomic, strong) UIImage *buttonImage;
+
 @end
 
 @interface JWGuideView : UIView
 
-- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos;
+- (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos actionHandle:(nullable ActionHandle)handle;
 
 @end
