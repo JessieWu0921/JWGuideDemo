@@ -22,6 +22,8 @@
         self.insetEdge = UIEdgeInsetsMake(-8, -8, -8, -8);  //默认
         self.cornRadius = 20.0f;
         self.buttonOffset = 30.0f;
+        self.baseFrame = CGRectZero;
+        self.verticalOffset = VerticalOffset;
     }
     return self;
 }
@@ -36,6 +38,8 @@
 
 @property (nonatomic, copy) NSArray<JWGuideInfo *> *guideInfos;
 @property (nonatomic, assign) NSUInteger currentIndex;
+
+@property (nonatomic, assign) CGRect visualFrame;
 
 @property (nonatomic, copy) ActionHandle handle;
 
@@ -94,6 +98,11 @@
 - (void)resetUI {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     
+    CGRect baseFrame = info.focusView ? info.focusView.frame : info.baseFrame;
+//    baseFrame.origin.y += info.isCustomizeNavBar ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0.0;
+    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
+    self.visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
+    
     [self setupMaskLayer:info];
     [self setupImageView:info.guideImageLocationType];
 //    [self setupActionBtn];
@@ -103,10 +112,10 @@
 - (void)setupImageView:(GuideInfoImageLocationType)locationType {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     UIImage *image = info.guideIntroImage;
-    CGRect baseFrame = info.focusView.frame;
-    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
-    
-    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
+//    CGRect baseFrame = info.focusView.frame;
+//    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
+//
+//    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
     CGRect imageViewFrame = self.guideInfoImageView.frame;
     imageViewFrame.size = image.size;
     self.guideInfoImageView.frame = imageViewFrame;
@@ -119,37 +128,37 @@
         case kGuideInfoImageLocationLeftTop:{
 
             imageViewFrame.origin.x = HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationRightTop: {
             
             imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationCenterTop: {
 
             imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMaxY(visualFrame) + VerticalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
         }
             break;
         case kGuideInfoImageLocationLeftBottom: {
 
             imageViewFrame.origin.x = HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
         }
             break;
         case kGuideInfoImageLocationRightBottom: {
 
             imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
         }
             break;
         case kGuideInfoImageLocationCenterBottom: {
             
             imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMinY(visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
         }
             break;
             
@@ -210,11 +219,11 @@
     self.maskLayer.fillColor = [UIColor blackColor].CGColor;
     
     //可视路径
-    CGRect baseFrame = guideInfo.focusView.frame;
-    [self getBaseFrameToWindow:guideInfo.focusView frame:&baseFrame];
-    
-    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
-    UIBezierPath *visualPath = [UIBezierPath bezierPathWithRoundedRect:visualFrame cornerRadius:guideInfo.cornRadius];
+//    CGRect baseFrame = guideInfo.focusView.frame;
+//    [self getBaseFrameToWindow:guideInfo.focusView frame:&baseFrame];
+//
+//    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
+    UIBezierPath *visualPath = [UIBezierPath bezierPathWithRoundedRect:_visualFrame cornerRadius:guideInfo.cornRadius];
     UIBezierPath *toPath = [UIBezierPath bezierPathWithRect:self.frame];
     [toPath appendPath:visualPath];
     

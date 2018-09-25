@@ -40,6 +40,8 @@ typedef void(^ActionHandle)(NSInteger guideIndex);
 @property (nonatomic, assign) CGRect baseFrame;
 @property (nonatomic, assign) CGFloat cornRadius;
 @property (nonatomic, assign) CGFloat buttonOffset;
+//图片与焦点view的offsetY
+@property (nonatomic, assign) CGFloat verticalOffset;
 @property (nonatomic, strong) UIImage *guideIntroImage;
 @property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
 @property (nonatomic, strong) UIView *focusView;
