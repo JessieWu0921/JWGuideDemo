@@ -112,10 +112,6 @@
 - (void)setupImageView:(GuideInfoImageLocationType)locationType {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
     UIImage *image = info.guideIntroImage;
-//    CGRect baseFrame = info.focusView.frame;
-//    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
-//
-//    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
     CGRect imageViewFrame = self.guideInfoImageView.frame;
     imageViewFrame.size = image.size;
     self.guideInfoImageView.frame = imageViewFrame;
@@ -219,10 +215,6 @@
     self.maskLayer.fillColor = [UIColor blackColor].CGColor;
     
     //可视路径
-//    CGRect baseFrame = guideInfo.focusView.frame;
-//    [self getBaseFrameToWindow:guideInfo.focusView frame:&baseFrame];
-//
-//    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:guideInfo.insetEdge];
     UIBezierPath *visualPath = [UIBezierPath bezierPathWithRoundedRect:_visualFrame cornerRadius:guideInfo.cornRadius];
     UIBezierPath *toPath = [UIBezierPath bezierPathWithRect:self.frame];
     [toPath appendPath:visualPath];
