@@ -43,38 +43,46 @@
     m1.focusView = self.view1;
     m1.guideImageLocationType = kGuideInfoImageLocationLeftTop;
     m1.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    
     JWGuideInfo *m2 = [JWGuideInfo new];
     m2.focusView = self.view2;
     m2.guideImageLocationType = kGuideInfoImageLocationCenterTop;
     m2.guideIntroImage = [UIImage imageNamed:@"mine_guide_content"];
     m2.buttonImage = [UIImage imageNamed:@"mine_guide_btn_know"];
     m2.buttonOffset = 38.0f;
+    
     JWGuideInfo *m3 = [JWGuideInfo new];
     m3.focusView = self.view3;
     m3.guideImageLocationType = kGuideInfoImageLocationRightTop;
     m3.guideIntroImage = [UIImage imageNamed:@"study_guide"];
     m3.buttonImage = [UIImage imageNamed:@"mine_guide_btn_know"];
     m3.buttonOffset = 20.0f;
+    
     JWGuideInfo *m4 = [JWGuideInfo new];
     m4.focusView = self.view4;
     m4.guideImageLocationType = kGuideInfoImageLocationLeftBottom;
     m4.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    
     JWGuideInfo *m5 = [JWGuideInfo new];
     m5.focusView = self.view5;
     m5.guideImageLocationType = kGuideInfoImageLocationRightBottom;
     m5.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    
     JWGuideInfo *m6 = [JWGuideInfo new];
     m6.focusView = self.view6;
     m6.guideImageLocationType = kGuideInfoImageLocationCenterBottom;
     m6.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    
     JWGuideInfo *m7 = [JWGuideInfo new];
     m7.focusView = self.view7;
     m7.guideImageLocationType = kGuideInfoImageLocationCenterTop;
     m7.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    
     JWGuideInfo *m8 = [JWGuideInfo new];
     m8.focusView = self.view8;
     m8.guideImageLocationType = kGuideInfoImageLocationLeftTop;
     m8.guideIntroImage = [UIImage imageNamed:@"study_guide"];
+    
     JWGuideInfo *m9 = [JWGuideInfo new];
     m9.focusView = self.view9;
     m9.cornRadius = 5.0f;
