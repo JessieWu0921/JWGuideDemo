@@ -33,6 +33,7 @@
 @interface JWGuideView()
 
 @property (nonatomic, strong) UIImageView *guideInfoImageView;
+@property (nonatomic, strong) UIImageView *focusImageView;
 @property (nonatomic, strong) UIButton *actionBtn;
 @property (nonatomic, strong) CAShapeLayer *maskLayer;
 
@@ -76,6 +77,13 @@
     return _guideInfoImageView;
 }
 
+- (UIImageView *)focusImageView {
+    if (!_focusImageView) {
+        _focusImageView = [[UIImageView alloc] init];
+    }
+    return _focusImageView;
+}
+
 - (UIButton *)actionBtn {
     if (!_actionBtn) {
         _actionBtn = [[UIButton alloc] init];
@@ -88,6 +96,10 @@
     [self setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.7]];
     if (self.guideInfoImageView) {
         [self addSubview:self.guideInfoImageView];
+    }
+    if (self.focusImageView) {
+        [self addSubview:self.focusImageView];
+        self.focusImageView.hidden = YES;
     }
     if (self.actionBtn) {
         [self addSubview:self.actionBtn];
@@ -103,14 +115,33 @@
     [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
     self.visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
     
-    [self setupMaskLayer:info];
+    ///优先显示图片
+    if (info.focusImage) {
+        self.focusImageView.hidden = NO;
+        [self setupFocusImage:info];
+    } else {
+        self.focusImageView.hidden = YES;
+        [self setupMaskLayer:info];
+    }
+    
     [self setupImageView:info.guideImageLocationType];
-//    [self setupActionBtn];
+}
+
+- (void)setupFocusImage:(JWGuideInfo *)info {
+    self.focusImageView.hidden = NO;
+    CGRect baseFrame = info.focusView.frame;
+    baseFrame.origin.y += info.isCustomizeNavBar ? CGRectGetHeight([UIApplication sharedApplication].statusBarFrame) : 0.0;
+    [self getBaseFrameToWindow:info.focusView frame:&baseFrame];
+    CGRect visualFrame = [self fetchfVisualViewFrame:baseFrame edgeInsets:info.insetEdge];
+    self.focusImageView.frame = visualFrame;
+    self.focusImageView.image = info.focusImage;
 }
 
 //说明图片locaiton
 - (void)setupImageView:(GuideInfoImageLocationType)locationType {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
+    
+    
     UIImage *image = info.guideIntroImage;
     CGRect imageViewFrame = self.guideInfoImageView.frame;
     imageViewFrame.size = image.size;
@@ -233,7 +264,6 @@
 
 #pragma mark - public method
 - (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos actionHandle:(nullable ActionHandle)handle{
-    [UIApplication sharedApplication].statusBarHidden = YES;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     self.frame = window.bounds;
     [window addSubview:self];
@@ -253,7 +283,6 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     if (self.currentIndex >= self.guideInfos.count - 1) {
         [self removeFromSuperview];
-        [UIApplication sharedApplication].statusBarHidden = NO;
     } else {
         self.currentIndex++;
         [self resetUI];

@@ -19,6 +19,17 @@
  1）centertop：默认说明图片在焦点view中下方；
  2）centerbottom:默认说明图片在焦点view中上方；
  
+ 5.添加焦点图片（优先考虑：若focusImage不为nil，则优先展示焦点图片，而不是画焦点轨迹）
+ 主要为了防止可能有些在新手引导的时候有弹窗，会在轨迹上覆盖一层，焦点图片也可以用insetEdge控制尺寸
+ 用法一样：
+ JWGuideInfo *guideInfo = [[JWGuideInfo alloc] init];
+ guideInfo.focusView = self.toolBar.fullScreenButton;
+ guideInfo.focusImage = [UIImage imageNamed:@"guide_fullscreen"];
+ guideInfo.insetEdge = UIEdgeInsetsMake(8, 6, 8, 6);
+ guideInfo.guideIntroImage = [UIImage imageNamed:@"img_guidepage"];
+ guideInfo.guideImageLocationType = kGuideInfoImageLocationRightBottom;
+ [guideView showGuideView:@[guideInfo]];
+ 
  ***/
 
 #import <UIKit/UIKit.h>
@@ -36,20 +47,28 @@ typedef void(^ActionHandle)(NSInteger guideIndex);
 
 @interface JWGuideInfo: NSObject
 
+//焦点view相对的可视化距离
 @property (nonatomic, assign) UIEdgeInsets insetEdge;
-//保留字段 暂时未做处理
+//baseframe是相对于windwo的rect(保留字段)
 @property (nonatomic, assign) CGRect baseFrame;
+//焦点view轨迹的圆角
 @property (nonatomic, assign) CGFloat cornRadius;
+//说明图片
+@property (nonatomic, strong) UIImage * _Nullable guideIntroImage;
+//焦点view的相对位置
+@property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
+//焦点view
+@property (nonatomic, strong) UIView * _Nullable focusView;
+//焦点图片
+@property (nonatomic, strong) UIImage * _Nullable focusImage;
+
 @property (nonatomic, assign) CGFloat buttonOffset;
 //图片与焦点view的offsetY
 @property (nonatomic, assign) CGFloat verticalOffset;
-@property (nonatomic, strong) UIImage *guideIntroImage;
-@property (nonatomic, assign) GuideInfoImageLocationType guideImageLocationType;
-@property (nonatomic, strong) UIView *focusView;
 //用于自定义navigationbar 上的焦点view
-@property (nonatomic, assign, getter=isNavigtionBar) BOOL navBar;
+@property (nonatomic, assign, getter=isNavigtionBar) BOOL isCustomizeNavBar;
 
-@property (nonatomic, strong) UIImage *buttonImage;
+@property (nonatomic, strong) UIImage * _Nullable buttonImage;
 
 @end
 
