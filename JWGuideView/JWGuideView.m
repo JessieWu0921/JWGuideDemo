@@ -20,6 +20,7 @@
     self = [super init];
     if (self) {
         self.insetEdge = UIEdgeInsetsMake(-8, -8, -8, -8);  //默认
+        self.imageOffset = UIOffsetMake(20, 15);
         self.cornRadius = 20.0f;
         self.buttonOffset = 30.0f;
         self.baseFrame = CGRectZero;
@@ -124,7 +125,7 @@
         [self setupMaskLayer:info];
     }
     
-    [self setupImageView:info.guideImageLocationType];
+    [self setupImageView:info.guideImageLocationType offset:info.imageOffset];
 }
 
 - (void)setupFocusImage:(JWGuideInfo *)info {
@@ -138,9 +139,8 @@
 }
 
 //说明图片locaiton
-- (void)setupImageView:(GuideInfoImageLocationType)locationType {
+- (void)setupImageView:(GuideInfoImageLocationType)locationType offset:(UIOffset)offset {
     JWGuideInfo *info = (JWGuideInfo *)self.guideInfos[self.currentIndex];
-    
     
     UIImage *image = info.guideIntroImage;
     CGRect imageViewFrame = self.guideInfoImageView.frame;
@@ -154,38 +154,38 @@
     switch (locationType) {
         case kGuideInfoImageLocationLeftTop:{
 
-            imageViewFrame.origin.x = HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
+            imageViewFrame.origin.x = offset.horizontal;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + offset.vertical;
         }
             break;
         case kGuideInfoImageLocationRightTop: {
             
-            imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
+            imageViewFrame.origin.x = width - imageWidth - offset.horizontal;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + offset.vertical;
         }
             break;
         case kGuideInfoImageLocationCenterTop: {
 
             imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + VerticalOffset;
+            imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + offset.vertical;
         }
             break;
         case kGuideInfoImageLocationLeftBottom: {
 
-            imageViewFrame.origin.x = HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.x = offset.horizontal;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - offset.vertical - imageHeight;
         }
             break;
         case kGuideInfoImageLocationRightBottom: {
 
-            imageViewFrame.origin.x = width - imageWidth - HorizontalOffset;
-            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.x = CGRectGetMaxX(_visualFrame) - imageWidth;// width - imageWidth - HorizontalOffset;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - offset.vertical - imageHeight;
         }
             break;
         case kGuideInfoImageLocationCenterBottom: {
             
-            imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
-            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - VerticalOffset - imageHeight;
+            imageViewFrame.origin.x = CGRectGetMidX(_visualFrame) - imageWidth / 2;// ScreenWidth / 2 - imageWidth / 2;
+            imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - offset.vertical - imageHeight;
         }
             break;
             

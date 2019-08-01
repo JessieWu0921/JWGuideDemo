@@ -51,6 +51,8 @@ typedef void(^ActionHandle)(NSInteger guideIndex);
 @property (nonatomic, assign) UIEdgeInsets insetEdge;
 //baseframe是相对于windwo的rect(保留字段)
 @property (nonatomic, assign) CGRect baseFrame;
+//焦点图片相对焦点view的offset
+@property (nonatomic, assign) UIOffset imageOffset;
 //焦点view轨迹的圆角
 @property (nonatomic, assign) CGFloat cornRadius;
 //说明图片
