@@ -30,6 +30,9 @@
  guideInfo.guideImageLocationType = kGuideInfoImageLocationRightBottom;
  [guideView showGuideView:@[guideInfo]];
  
+ 6.添加说明图片相对焦点view的offset属性（可以更灵活的控制说明图片位置）
+ 注意：这个位置的offset，也是根据guideImageLocationType来计算的
+ 需要设置guideImageLocationType
  ***/
 
 #import <UIKit/UIKit.h>
