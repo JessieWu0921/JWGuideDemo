@@ -166,7 +166,7 @@
             break;
         case kGuideInfoImageLocationCenterTop: {
 
-            imageViewFrame.origin.x = ScreenWidth / 2 - imageWidth / 2;
+            imageViewFrame.origin.x = CGRectGetMidX(_visualFrame) - imageWidth / 2;//ScreenWidth / 2 - imageWidth / 2;
             imageViewFrame.origin.y = CGRectGetMaxY(_visualFrame) + offset.vertical;
         }
             break;
@@ -178,7 +178,7 @@
             break;
         case kGuideInfoImageLocationRightBottom: {
 
-            imageViewFrame.origin.x = CGRectGetMaxX(_visualFrame) - imageWidth;// width - imageWidth - HorizontalOffset;
+            imageViewFrame.origin.x = CGRectGetMaxX(_visualFrame) - imageWidth + offset.horizontal;
             imageViewFrame.origin.y = CGRectGetMinY(_visualFrame) - offset.vertical - imageHeight;
         }
             break;
