@@ -113,7 +113,9 @@
     __weak typeof(guideView) weakGuideView = guideView;
     [guideView showGuideView:datas actionHandle:^(NSInteger guideIndex) {
         NSLog(@"now clicked %zi guideView.", guideIndex);
+        //下一步引导
 //        [weakGuideView nextGuideView];
+        //跳过引导
         [weakGuideView removeAllGuide];
     }];
 }
