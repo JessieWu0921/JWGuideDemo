@@ -80,5 +80,9 @@ typedef void(^ActionHandle)(NSInteger guideIndex);
 @interface JWGuideView : UIView
 
 - (void)showGuideView:(NSArray<JWGuideInfo*> * _Nonnull)guidInfos actionHandle:(nullable ActionHandle)handle;
+///执行下一步
+- (void)nextGuideView;
+///跳过引导
+- (void)removeAllGuide;
 
 @end

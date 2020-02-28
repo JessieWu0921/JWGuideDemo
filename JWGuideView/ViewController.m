@@ -110,8 +110,11 @@
     
     
     JWGuideView *guideView = [[JWGuideView alloc] init];
+    __weak typeof(guideView) weakGuideView = guideView;
     [guideView showGuideView:datas actionHandle:^(NSInteger guideIndex) {
         NSLog(@"now clicked %zi guideView.", guideIndex);
+//        [weakGuideView nextGuideView];
+        [weakGuideView removeAllGuide];
     }];
 }
 

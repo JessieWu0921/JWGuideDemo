@@ -277,7 +277,23 @@
     }
 }
 
+- (void)nextGuideView {
+    [self dismissGuideView];
+}
+
+- (void)removeAllGuide {
+    [self removeFromSuperview];
+}
+
 #pragma mark - private methods
+- (void)dismissGuideView {
+    if (self.currentIndex >= self.guideInfos.count - 1) {
+        [self removeFromSuperview];
+    } else {
+        self.currentIndex++;
+        [self resetUI];
+    }
+}
 
 #pragma mark - actions & events
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
